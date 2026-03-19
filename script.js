@@ -1,0 +1,66 @@
+
+/* --- 最終版 CSS --- */
+:root { --deep-space-blue: #0D0B2E; --starlight-yellow: #FFEB3B; --control-panel-white: #FFFFFF; --hologram-blue: #00D1FF; --thruster-orange: #FF9800; --success-green: #76FF03; --warning-red: #F44336; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, sans-serif; background: linear-gradient(145deg, var(--deep-space-blue), #1a1a40); color: var(--control-panel-white); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+.game-container { width: 95%; max-width: 500px; height: 90vh; max-height: 800px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); padding: 20px; position: relative; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); overflow: hidden; }
+.version-tag { position: absolute; top: 10px; right: 15px; font-size: 12px; color: rgba(255, 255, 255, 0.5); z-index: 5; }
+.screen { position: absolute; top: 0; padding: 20px; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease-in-out, visibility 0.4s; opacity: 0; visibility: hidden; }
+.screen.active { opacity: 1; visibility: visible; z-index: 2; }
+.title { color: var(--starlight-yellow); font-size: 2.5rem; margin-bottom: 30px; text-shadow: 0 0 10px var(--starlight-yellow); text-align: center; }
+.btn { border: none; border-radius: 10px; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+.btn-primary { background-color: var(--thruster-orange); color: var(--deep-space-blue); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4); }
+.login-form { display: flex; flex-direction: column; gap: 20px; width: 80%; }
+.select-group label { display: block; margin-bottom: 5px; color: var(--hologram-blue); font-size: 1.1rem; }
+select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid var(--hologram-blue); background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; }
+.rules-list { list-style: none; font-size: 1.4rem; line-height: 2; background: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+.text-success { color: var(--success-green); } .text-danger { color: var(--warning-red); }
+.status-bar { display: flex; justify-content: space-between; width: 100%; font-size: 1.5rem; padding: 0 10px; position: absolute; top: 20px; }
+.question-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px; }
+#question-area { font-size: 3rem; font-weight: bold; }
+.aid-button { font-size: 1.8rem; background: none; border: none; cursor: pointer; opacity: 0.7; transition: all 0.2s ease; padding: 0; }
+.aid-button:hover { opacity: 1; transform: scale(1.2); }
+#answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; }
+.btn-answer { padding: 25px; font-size: 1.8rem; background: transparent; border: 2px solid var(--hologram-blue); color: var(--hologram-blue); }
+.btn-answer:hover { background: var(--hologram-blue); color: var(--deep-space-blue); box-shadow: 0 0 20px var(--hologram-blue); }
+.btn-secondary { margin-top: 20px; background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.6); }
+.overlay-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 100; opacity: 0; transition: opacity 0.3s; }
+.overlay-container.active { display: flex; opacity: 1; }
+.aid-content-box { background: rgba(26, 26, 64, 0.9); padding: 20px; border-radius: 15px; border: 1px solid var(--hologram-blue); display: flex; flex-direction: column; gap: 10px; max-width: 90%; max-height: 80%; overflow-y: auto; }
+.aid-row { display: flex; gap: 8px; justify-content: center; } .aid-object { font-size: 1.5rem; color: var(--starlight-yellow); }
+.rank-info { font-size: 1.2rem; font-weight: bold; color: var(--hologram-blue); margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 8px var(--hologram-blue); text-align: center; }
+@keyframes flash { 50% { opacity: 0.7; transform: scale(1.05); } }
+.timer-warning { color: var(--warning-red); font-weight: bold; animation: flash 1.2s infinite; }
+@keyframes correct-flash { 50% { background-color: var(--success-green); color: var(--deep-space-blue); transform: scale(1.05); box-shadow: 0 0 25px var(--success-green); } }
+.correct-flash { animation: correct-flash 0.5s ease-out; }
+@keyframes incorrect-shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+.incorrect-shake { background-color: var(--warning-red); color: var(--control-panel-white); animation: incorrect-shake 0.4s; }
+@keyframes highlight-correct { 50% { background-color: var(--success-green); color: var(--deep-space-blue); transform: scale(1.1); border-color: var(--success-green); box-shadow: 0 0 20px var(--success-green); } }
+.highlight-correct { animation: highlight-correct 0.8s ease-in-out; }
+@keyframes score-pulse { 50% { transform: scale(1.3); text-shadow: 0 0 15px var(--starlight-yellow); } }
+.pulse-animation { animation: score-pulse 0.4s ease-in-out; }
+@keyframes score-wiggle { 0%, 100% { transform: translateX(0) rotate(0); } 20% { transform: translateX(-5px) rotate(-3deg); } 40% { transform: translateX(5px) rotate(3deg); } 60% { transform: translateX(-3px) rotate(-2deg); } 80% { transform: translateX(3px) rotate(2deg); } }
+.wiggle-animation { animation: score-wiggle 0.5s ease-in-out; color: var(--warning-red); }
+#leaderboard, .leaderboard-container-main { width: 90%; margin-top: 20px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 15px; }
+.leaderboard-container-main { height: 65%; margin-bottom: 20px; overflow-y: auto; }
+#leaderboard h2, .leaderboard-container-main h2 { color: var(--starlight-yellow); margin-bottom: 10px; text-align: center; }
+.leaderboard-list { list-style: none; padding: 0; }
+.leaderboard-item { display: flex; justify-content: space-between; padding: 8px 10px; border-radius: 5px; margin-bottom: 5px; font-size: 1.1rem; }
+.leaderboard-item span:first-child { flex-basis: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.leaderboard-item span:last-child { font-weight: bold; color: var(--starlight-yellow); }
+.leaderboard-item.current-player { background-color: var(--hologram-blue); color: var(--deep-space-blue); font-weight: bold; }
+.leaderboard-item.current-player span:last-child { color: var(--deep-space-blue); }
+@keyframes move-stars-up { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+#stars-small, #stars-medium, #stars-large { pointer-events: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 1px; height: 1px; background: transparent; animation: move-stars-up linear infinite; z-index: -1; }
+#stars-small { animation-duration: 200s; }
+#stars-medium { animation-duration: 100s; }
+#stars-large { animation-duration: 50s; }
+.planet { position: absolute; border-radius: 50%; background-size: cover; box-shadow: inset 15px 0px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255, 255, 255, 0.1); z-index: -2; pointer-events: none; }
+.planet-1 { width: 120px; height: 120px; top: 15%; left: -150px; background-image: radial-gradient(circle at 30% 70%, #d4a373, #a27b5c); animation: move-planet-1 200s linear infinite; }
+@keyframes move-planet-1 { from { transform: translateX(0); } to { transform: translateX(800px); } }
+.planet-2 { width: 80px; height: 80px; bottom: 10%; right: 5%; background-image: radial-gradient(circle at top left, #f7d6a5, #c8a375); animation: spin-planet 120s linear infinite; }
+.planet-2::before { content: ''; position: absolute; top: 50%; left: -25%; width: 150%; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: translateY(-50%) rotateZ(-20deg); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+@keyframes spin-planet { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.planet-3 { width: 40px; height: 40px; top: 20%; right: 15%; background-image: radial-gradient(circle, #4d9de0, #3365a3); box-shadow: inset 5px 0px 10px rgba(0,0,0,0.5); }
+.designer-credit { position: absolute; bottom: 10px; right: 15px; font-size: 10px; color: rgba(255, 255, 255, 0.4); z-index: 3; pointer-events: none; }
